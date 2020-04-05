@@ -18,6 +18,10 @@ function App() {
       });
   }, []);
 
+  //get time in msec then convert it to Integer
+  const date = new Date(parseInt(latest.updated));
+  const lastUpdated = date.toString();
+
   return (
     <div>
       <CardDeck>
@@ -32,7 +36,7 @@ function App() {
             <Card.Text>{latest.cases}</Card.Text>
           </Card.Body>
           <Card.Footer>
-            <small>Last updated 3 mins ago</small>
+            <small>Last updated {lastUpdated}</small>
           </Card.Footer>
         </Card>
         <Card
@@ -43,10 +47,10 @@ function App() {
         >
           <Card.Body>
             <Card.Title>Death</Card.Title>
-  <Card.Text>{latest.deaths}</Card.Text>
+            <Card.Text>{latest.deaths}</Card.Text>
           </Card.Body>
           <Card.Footer>
-            <small>Last updated 3 mins ago</small>
+  <small>Last updated{lastUpdated}</small>
           </Card.Footer>
         </Card>
         <Card
@@ -57,10 +61,10 @@ function App() {
         >
           <Card.Body>
             <Card.Title>Recovered</Card.Title>
-  <Card.Text>{latest.recovered}</Card.Text>
+            <Card.Text>{latest.recovered}</Card.Text>
           </Card.Body>
           <Card.Footer>
-            <small>Last updated 3 mins ago</small>
+            <small>Last updated{lastUpdated}}</small>
           </Card.Footer>
         </Card>
       </CardDeck>
