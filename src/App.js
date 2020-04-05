@@ -9,9 +9,13 @@ function App() {
   const [latest, setLatest] = useState("");
   useEffect(() => {
     axios
-      .get("https://corona.lmao.ninja/all")
-      .then((res) => {
-        setLatest(res.data);
+    .all([
+      axios.get("https://corona.lmao.ninja/all"),
+      axios.get("https://corona.lmao.ninja/countries")
+    ])
+      .then(ResponseArr => {
+        setLatest(ResponseArr[0].data);
+        console.log(ResponseArr[1].data)
       })
       .catch((err) => {
         console.log(err);
@@ -50,7 +54,7 @@ function App() {
             <Card.Text>{latest.deaths}</Card.Text>
           </Card.Body>
           <Card.Footer>
-  <small>Last updated{lastUpdated}</small>
+            <small>Last updated {lastUpdated}</small>
           </Card.Footer>
         </Card>
         <Card
@@ -64,7 +68,7 @@ function App() {
             <Card.Text>{latest.recovered}</Card.Text>
           </Card.Body>
           <Card.Footer>
-            <small>Last updated{lastUpdated}}</small>
+            <small>Last updated {lastUpdated}</small>
           </Card.Footer>
         </Card>
       </CardDeck>
