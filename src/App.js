@@ -31,7 +31,9 @@ function App() {
   const lastUpdated = date.toString();
 
   const filterCountries = results.filter((item) => {
-    return searchCountries !== "" ? item.country.includes(searchCountries) : item;
+    return searchCountries !== ""
+      ? item.country.includes(searchCountries)
+      : item;
   });
   const countries = filterCountries.map((data, i) => {
     return (
