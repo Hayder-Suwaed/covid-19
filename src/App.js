@@ -3,12 +3,14 @@ import Card from "react-bootstrap/Card";
 import CardDeck from "react-bootstrap/CardDeck";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-import CardColumns from "react-bootstrap/CardColumns";
 import Columns from "react-columns";
+import Form from "react-bootstrap/Form";
+
 function App() {
   //hooks
   const [latest, setLatest] = useState([]);
   const [results, setResults] = useState([]);
+  const [searchCountries, setSearchCountries] = useState("");
   useEffect(() => {
     axios
       .all([
@@ -28,7 +30,10 @@ function App() {
   const date = new Date(parseInt(latest.updated));
   const lastUpdated = date.toString();
 
-  const countries = results.map((data, i) => {
+  const filterCountries = results.filter((item) => {
+    return searchCountries !== "" ? item.country.includes(searchCountries) : item;
+  });
+  const countries = filterCountries.map((data, i) => {
     return (
       <Card
         key={i}
@@ -65,6 +70,9 @@ function App() {
 
   return (
     <div>
+      <br />
+      <h2 style={{ textAlign: "center" }}>Covid-19 Live Status</h2>
+      <br />
       <CardDeck>
         <Card
           bg="secondary"
@@ -109,6 +117,16 @@ function App() {
           </Card.Footer>
         </Card>
       </CardDeck>
+      <br />
+      <Form>
+        <Form.Group controlId="formGroupSearch">
+          <Form.Control
+            type="text"
+            placeholder="Search a country"
+            onChange={(e) => setSearchCountries(e.target.value)}
+          />
+        </Form.Group>
+      </Form>
       <Columns queries={queries}>{countries}</Columns>
     </div>
   );
