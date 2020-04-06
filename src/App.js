@@ -6,16 +6,17 @@ import axios from "axios";
 
 function App() {
   //hooks
-  const [latest, setLatest] = useState("");
+  const [latest, setLatest] = useState([]);
+  const [results, setResults] = useState([]);
   useEffect(() => {
     axios
-    .all([
-      axios.get("https://corona.lmao.ninja/all"),
-      axios.get("https://corona.lmao.ninja/countries")
-    ])
-      .then(ResponseArr => {
+      .all([
+        axios.get("https://corona.lmao.ninja/all"),
+        axios.get("https://corona.lmao.ninja/countries"),
+      ])
+      .then((ResponseArr) => {
         setLatest(ResponseArr[0].data);
-        console.log(ResponseArr[1].data)
+        setResults(ResponseArr[1].data);
       })
       .catch((err) => {
         console.log(err);
@@ -25,6 +26,28 @@ function App() {
   //get time in msec then convert it to Integer
   const date = new Date(parseInt(latest.updated));
   const lastUpdated = date.toString();
+
+  const countries = results.map((data) => {
+    return (
+      <Card
+        bg="light"
+        text="dark"
+        className="text-center"
+        style={{ margin: "10px" }}
+      >
+        <Card.Body>
+          <Card.Title>{data.country}</Card.Title>
+          <Card.Text>Cases {data.cases}</Card.Text>
+          <Card.Text>Deaths {data.deaths}</Card.Text>
+          <Card.Text>Recovered {data.recovered}</Card.Text>
+          <Card.Text>Today's cases {data.todayCases}</Card.Text>
+          <Card.Text>Today's deaths {data.todyDeaths}</Card.Text>
+          <Card.Text>Active {data.active}</Card.Text>
+          <Card.Text>Critical {data.critical}</Card.Text>
+        </Card.Body>
+      </Card>
+    );
+  });
 
   return (
     <div>
@@ -72,6 +95,7 @@ function App() {
           </Card.Footer>
         </Card>
       </CardDeck>
+      {countries}
     </div>
   );
 }
